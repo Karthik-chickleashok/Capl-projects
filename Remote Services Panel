@@ -1,1 +1,83 @@
 
+/* RemoteFunctionsPanel.can */
+
+variables
+{
+  // For future timers / debouncing if needed
+}
+
+// Helper functions
+void openDoor(char doorId[])
+{
+  write("Remote: Open door %s", doorId);
+  // TODO: later send CAN / SOME-IP message or set *State env vars
+}
+
+void openHood()
+{
+  write("Remote: Open hood");
+  // TODO: add bus messages
+}
+
+void openTrunk()
+{
+  write("Remote: Open trunk");
+  // TODO: add bus messages
+}
+
+// ==== Event handlers for Panel commands ====
+
+on envVar Door_FL_OpenCmd
+{
+  if (env.Door_FL_OpenCmd == 1)
+  {
+    openDoor("FL");
+    // reset command to 0 so button can be pressed again
+    env.Door_FL_OpenCmd = 0;
+  }
+}
+
+on envVar Door_FR_OpenCmd
+{
+  if (env.Door_FR_OpenCmd == 1)
+  {
+    openDoor("FR");
+    env.Door_FR_OpenCmd = 0;
+  }
+}
+
+on envVar Door_RL_OpenCmd
+{
+  if (env.Door_RL_OpenCmd == 1)
+  {
+    openDoor("RL");
+    env.Door_RL_OpenCmd = 0;
+  }
+}
+
+on envVar Door_RR_OpenCmd
+{
+  if (env.Door_RR_OpenCmd == 1)
+  {
+    openDoor("RR");
+    env.Door_RR_OpenCmd = 0;
+  }
+}
+
+on envVar Hood_OpenCmd
+{
+  if (env.Hood_OpenCmd == 1)
+  {
+    openHood();
+    env.Hood_OpenCmd = 0;
+  }
+}
+
+on envVar Trunk_OpenCmd
+{
+  if (env.Trunk_OpenCmd == 1)
+  {
+    openTrunk();
+    env.Trunk_OpenCmd = 0;
+  }
+}
