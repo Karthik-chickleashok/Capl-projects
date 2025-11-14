@@ -1,14 +1,13 @@
 /* ---------------------------------------------------------
-   BCM Remote Functions Simulation - System Variables
-   SysVars (int/boolean 0 or 1):
-   BCM::Doors::FL::OpenCmd, FR, RL, RR
-   BCM::Hood::OpenCmd
-   BCM::Trunk::OpenCmd
+   BCM Remote Functions Simulation - Using System Variables
+   SysVars (int / boolean 0 or 1):
+   FL_OpenCmd, FR_OpenCmd, RL_OpenCmd, RR_OpenCmd,
+   Hood_OpenCmd, Trunk_OpenCmd
 ---------------------------------------------------------- */
 
 variables
 {
-  // timers or state vars later if needed
+  // timers or extra state later
 }
 
 /* --- Helper functions --- */
@@ -30,59 +29,59 @@ void BCM_OpenTrunk()
 
 /* --- Door command handlers --- */
 
-on sysvar BCM::Doors::FL::OpenCmd
+on sysvar FL_OpenCmd
 {
-  if (@sysvar::BCM::Doors::FL::OpenCmd)       // 1 = pressed
+  if (@sysvar::FL_OpenCmd)
   {
     BCM_OpenDoor("FL");
-    @sysvar::BCM::Doors::FL::OpenCmd = 0;     // reset
+    @sysvar::FL_OpenCmd = 0;    // reset after handling
   }
 }
 
-on sysvar BCM::Doors::FR::OpenCmd
+on sysvar FR_OpenCmd
 {
-  if (@sysvar::BCM::Doors::FR::OpenCmd)
+  if (@sysvar::FR_OpenCmd)
   {
     BCM_OpenDoor("FR");
-    @sysvar::BCM::Doors::FR::OpenCmd = 0;
+    @sysvar::FR_OpenCmd = 0;
   }
 }
 
-on sysvar BCM::Doors::RL::OpenCmd
+on sysvar RL_OpenCmd
 {
-  if (@sysvar::BCM::Doors::RL::OpenCmd)
+  if (@sysvar::RL_OpenCmd)
   {
     BCM_OpenDoor("RL");
-    @sysvar::BCM::Doors::RL::OpenCmd = 0;
+    @sysvar::RL_OpenCmd = 0;
   }
 }
 
-on sysvar BCM::Doors::RR::OpenCmd
+on sysvar RR_OpenCmd
 {
-  if (@sysvar::BCM::Doors::RR::OpenCmd)
+  if (@sysvar::RR_OpenCmd)
   {
     BCM_OpenDoor("RR");
-    @sysvar::BCM::Doors::RR::OpenCmd = 0;
+    @sysvar::RR_OpenCmd = 0;
   }
 }
 
 /* --- Hood / Trunk handlers --- */
 
-on sysvar BCM::Hood::OpenCmd
+on sysvar Hood_OpenCmd
 {
-  if (@sysvar::BCM::Hood::OpenCmd)
+  if (@sysvar::Hood_OpenCmd)
   {
     BCM_OpenHood();
-    @sysvar::BCM::Hood::OpenCmd = 0;
+    @sysvar::Hood_OpenCmd = 0;
   }
 }
 
-on sysvar BCM::Trunk::OpenCmd
+on sysvar Trunk_OpenCmd
 {
-  if (@sysvar::BCM::Trunk::OpenCmd)
+  if (@sysvar::Trunk_OpenCmd)
   {
     BCM_OpenTrunk();
-    @sysvar::BCM::Trunk::OpenCmd = 0;
+    @sysvar::Trunk_OpenCmd = 0;
   }
 }
 
@@ -90,5 +89,5 @@ on sysvar BCM::Trunk::OpenCmd
 
 on start
 {
-  write("BCM Remote Functions Node Initialized");
+  write("BCM Remote Functions Node Initialized (SysVars: *_OpenCmd)");
 }
