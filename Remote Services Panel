@@ -61,4 +61,44 @@ on sysvar BCM.Doors.RL.OpenCmd
 
 on sysvar BCM.Doors.RR.OpenCmd
 {
-  if (sysvar.getBool("BCM.Doors
+  if (sysvar.getBool("BCM.Doors.RR.OpenCmd"))
+  {
+    BCM_OpenDoor("RR");
+    sysvar.set("BCM.Doors.RR.OpenCmd", false);
+  }
+}
+
+/* -------------------------------------------------------------------
+    Hood Command Handler
+   ------------------------------------------------------------------- */
+
+on sysvar BCM.Hood.OpenCmd
+{
+  if (sysvar.getBool("BCM.Hood.OpenCmd"))
+  {
+    BCM_OpenHood();
+    sysvar.set("BCM.Hood.OpenCmd", false);
+  }
+}
+
+/* -------------------------------------------------------------------
+    Trunk Command Handler
+   ------------------------------------------------------------------- */
+
+on sysvar BCM.Trunk.OpenCmd
+{
+  if (sysvar.getBool("BCM.Trunk.OpenCmd"))
+  {
+    BCM_OpenTrunk();
+    sysvar.set("BCM.Trunk.OpenCmd", false);
+  }
+}
+
+/* -------------------------------------------------------------------
+    Initialization Log
+   ------------------------------------------------------------------- */
+
+on start
+{
+  write("BCM Node Initialized - Remote Functions Ready");
+}
