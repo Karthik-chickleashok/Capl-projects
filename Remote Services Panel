@@ -1,83 +1,64 @@
-
-/* RemoteFunctionsPanel.can */
+/* -------------------------------------------------------------------
+    BCM Remote Functions Simulation
+    Handles: Door Open, Hood Open, Trunk Open
+    Uses System Variables under namespace: BCM
+   ------------------------------------------------------------------- */
 
 variables
 {
-  // For future timers / debouncing if needed
+  // Used for logging, timing, animations later if needed.
 }
 
-// Helper functions
-void openDoor(char doorId[])
+/* -------------------------------------------------------------------
+    Helper Functions
+   ------------------------------------------------------------------- */
+
+void BCM_OpenDoor(char door[])
 {
-  write("Remote: Open door %s", doorId);
-  // TODO: later send CAN / SOME-IP message or set *State env vars
+  write("BCM: Open Command Received for Door %s", door);
 }
 
-void openHood()
+void BCM_OpenHood()
 {
-  write("Remote: Open hood");
-  // TODO: add bus messages
+  write("BCM: Hood Open Command Triggered");
 }
 
-void openTrunk()
+void BCM_OpenTrunk()
 {
-  write("Remote: Open trunk");
-  // TODO: add bus messages
+  write("BCM: Trunk Open Command Triggered");
 }
 
-// ==== Event handlers for Panel commands ====
+/* -------------------------------------------------------------------
+    Door Command Handlers
+   ------------------------------------------------------------------- */
 
-on envVar Door_FL_OpenCmd
+on sysvar BCM.Doors.FL.OpenCmd
 {
-  if (env.Door_FL_OpenCmd == 1)
+  if (sysvar.getBool("BCM.Doors.FL.OpenCmd"))
   {
-    openDoor("FL");
-    // reset command to 0 so button can be pressed again
-    env.Door_FL_OpenCmd = 0;
+    BCM_OpenDoor("FL");
+    sysvar.set("BCM.Doors.FL.OpenCmd", false);
   }
 }
 
-on envVar Door_FR_OpenCmd
+on sysvar BCM.Doors.FR.OpenCmd
 {
-  if (env.Door_FR_OpenCmd == 1)
+  if (sysvar.getBool("BCM.Doors.FR.OpenCmd"))
   {
-    openDoor("FR");
-    env.Door_FR_OpenCmd = 0;
+    BCM_OpenDoor("FR");
+    sysvar.set("BCM.Doors.FR.OpenCmd", false);
   }
 }
 
-on envVar Door_RL_OpenCmd
+on sysvar BCM.Doors.RL.OpenCmd
 {
-  if (env.Door_RL_OpenCmd == 1)
+  if (sysvar.getBool("BCM.Doors.RL.OpenCmd"))
   {
-    openDoor("RL");
-    env.Door_RL_OpenCmd = 0;
+    BCM_OpenDoor("RL");
+    sysvar.set("BCM.Doors.RL.OpenCmd", false);
   }
 }
 
-on envVar Door_RR_OpenCmd
+on sysvar BCM.Doors.RR.OpenCmd
 {
-  if (env.Door_RR_OpenCmd == 1)
-  {
-    openDoor("RR");
-    env.Door_RR_OpenCmd = 0;
-  }
-}
-
-on envVar Hood_OpenCmd
-{
-  if (env.Hood_OpenCmd == 1)
-  {
-    openHood();
-    env.Hood_OpenCmd = 0;
-  }
-}
-
-on envVar Trunk_OpenCmd
-{
-  if (env.Trunk_OpenCmd == 1)
-  {
-    openTrunk();
-    env.Trunk_OpenCmd = 0;
-  }
-}
+  if (sysvar.getBool("BCM.Doors
