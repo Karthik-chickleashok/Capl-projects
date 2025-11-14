@@ -1,107 +1,94 @@
-/*@!Encoding:65001*/
-/* -------------------------------------------------------------------
-    BCM Remote Functions Simulation
-    Handles: Door Open, Hood Open, Trunk Open
-    Uses System Variables under namespace: BCM
-   ------------------------------------------------------------------- */
+/* ---------------------------------------------------------
+   BCM Remote Functions Simulation - System Variables
+   SysVars (int/boolean 0 or 1):
+   BCM::Doors::FL::OpenCmd, FR, RL, RR
+   BCM::Hood::OpenCmd
+   BCM::Trunk::OpenCmd
+---------------------------------------------------------- */
 
 variables
 {
-  // Used for logging, timing, animations later if needed.
+  // timers or state vars later if needed
 }
 
-/* -------------------------------------------------------------------
-    Helper Functions
-   ------------------------------------------------------------------- */
+/* --- Helper functions --- */
 
 void BCM_OpenDoor(char door[])
 {
-  write("BCM: Open Command Received for Door %s", door);
+  write("BCM: Open command for Door %s", door);
 }
 
 void BCM_OpenHood()
 {
-  write("BCM: Hood Open Command Triggered");
+  write("BCM: Hood Open command");
 }
 
 void BCM_OpenTrunk()
 {
-  write("BCM: Trunk Open Command Triggered");
+  write("BCM: Trunk Open command");
 }
 
-/* -------------------------------------------------------------------
-    Door Command Handlers
-   ------------------------------------------------------------------- */
+/* --- Door command handlers --- */
 
-on sysvar BCM::Doors::FL_OpenCmd
+on sysvar BCM::Doors::FL::OpenCmd
 {
-  if (sysvar.getBool("BCM::Doors::FL_OpenCmd"))
+  if (@sysvar::BCM::Doors::FL::OpenCmd)       // 1 = pressed
   {
     BCM_OpenDoor("FL");
-    sysvar.set("BCM::Doors::FL_OpenCmd", false);
+    @sysvar::BCM::Doors::FL::OpenCmd = 0;     // reset
   }
 }
 
-on sysvar BCM::Doors::FR_OpenCmd
+on sysvar BCM::Doors::FR::OpenCmd
 {
-  if (sysvar.getBool("BCM.Doors.FR_OpenCmd"))
+  if (@sysvar::BCM::Doors::FR::OpenCmd)
   {
     BCM_OpenDoor("FR");
-    sysvar.set("BCM.Doors.FR_OpenCmd", false);
+    @sysvar::BCM::Doors::FR::OpenCmd = 0;
   }
 }
 
-on sysvar BCM::Doors::RL_OpenCmd
+on sysvar BCM::Doors::RL::OpenCmd
 {
-  if (sysvar.getBool("BCM.Doors.RL_OpenCmd"))
+  if (@sysvar::BCM::Doors::RL::OpenCmd)
   {
     BCM_OpenDoor("RL");
-    sysvar.set("BCM.Doors.RL_OpenCmd", false);
+    @sysvar::BCM::Doors::RL::OpenCmd = 0;
   }
 }
 
-on sysvar BCM::Doors::RR_OpenCmd
+on sysvar BCM::Doors::RR::OpenCmd
 {
-  if (sysvar.getBool("BCM.Doors.RR.OpenCmd"))
+  if (@sysvar::BCM::Doors::RR::OpenCmd)
   {
     BCM_OpenDoor("RR");
-    sysvar.set("BCM.Doors.RR.OpenCmd", false);
+    @sysvar::BCM::Doors::RR::OpenCmd = 0;
   }
 }
 
-/* -------------------------------------------------------------------
-    Hood Command Handler
-   ------------------------------------------------------------------- */
+/* --- Hood / Trunk handlers --- */
 
-on sysvar BCM::Hood::Hood_OpenCmd
+on sysvar BCM::Hood::OpenCmd
 {
-  if (sysvar.getBool("BCM.Hood_OpenCmd"))
+  if (@sysvar::BCM::Hood::OpenCmd)
   {
     BCM_OpenHood();
-    sysvar.set("BCM.Hood)OpenCmd", false);
+    @sysvar::BCM::Hood::OpenCmd = 0;
   }
 }
 
-/* -------------------------------------------------------------------
-    Trunk Command Handler
-   ------------------------------------------------------------------- */
-
-on sysvar BCM::Trunk::Trunk_OpenCmd
+on sysvar BCM::Trunk::OpenCmd
 {
-  if (sysvar.getBool("BCM.Trunk.OpenCmd"))
+  if (@sysvar::BCM::Trunk::OpenCmd)
   {
     BCM_OpenTrunk();
-    sysvar.set("BCM.Trunk.OpenCmd", false);
+    @sysvar::BCM::Trunk::OpenCmd = 0;
   }
 }
 
-/* -------------------------------------------------------------------
-    Initialization Log
-   ------------------------------------------------------------------- */
+/* --- Init --- */
 
 on start
 {
-  write("BCM Node Initialized - Remote Functions Ready");
+  write("BCM Remote Functions Node Initialized");
 }
-
-sysvar 
